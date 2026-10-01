@@ -2,11 +2,26 @@
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
             <NotAuthorized>
-                <p>Your account does not currently have access to this page.</p>
-                <a href="access" data-enhance-nav="false">Check my access</a>
+                <LayoutView Layout="typeof(Layout.MainLayout)">
+                    <div class="status-page">
+                        <div class="status-card">
+                            <div class="status-icon status-icon-muted" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="5" y="10" width="14" height="11" rx="2" />
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                                </svg>
+                            </div>
+                            <p class="eyebrow">Single Buyer · LSS Repository</p>
+                            <h1>Access unavailable</h1>
+                            <p>Your account does not currently have access to this page.</p>
+                            <div class="status-actions">
+                                <a class="button" href="access" data-enhance-nav="false">Check my access</a>
+                            </div>
+                        </div>
+                    </div>
+                </LayoutView>
             </NotAuthorized>
         </AuthorizeRouteView>
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
-

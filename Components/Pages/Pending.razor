@@ -2,13 +2,22 @@
 @attribute [Authorize(Policy = "SignedIn")]
 
 <PageTitle>Pending approval | Single Buyer LSS Repository</PageTitle>
-<p class="eyebrow">SINGLE BUYER · REPOSITORY ACCESS</p>
-<h1>Access pending approval</h1>
-<section>
-    <h2>Your Microsoft sign-in was successful</h2>
-    <p>Your account is registered. An LSS administrator must assign your role before you can access the repository.</p>
-    <p>You can check your approval status below. If you need assistance, contact your repository administrator.</p>
-    <a class="button" href="access" data-enhance-nav="false">Check approval status</a>
-</section>
-<a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
 
+<div class="status-page">
+    <div class="status-card">
+        <div class="status-icon status-icon-pending" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+            </svg>
+        </div>
+        <p class="eyebrow">Single Buyer · Repository access</p>
+        <h1>Access pending approval</h1>
+        <p>Your Microsoft sign-in was successful and your account is registered. An LSS administrator must assign your role before you can access the repository.</p>
+        <p>You can check your approval status at any time. If you need assistance, contact your repository administrator.</p>
+        <div class="status-actions">
+            <a class="button" href="access" data-enhance-nav="false">Check approval status</a>
+            <a class="button-outline" href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+        </div>
+    </div>
+</div>

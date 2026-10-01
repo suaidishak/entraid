@@ -1,9 +1,20 @@
 ﻿@page "/access-denied"
 @attribute [Authorize(Policy = "SignedIn")]
 <PageTitle>Access unavailable | Single Buyer LSS Repository</PageTitle>
-<h1>Access unavailable</h1>
-<section>
-    <p>Your current role does not allow access to this page.</p>
-    <a class="button" href="access" data-enhance-nav="false">Go to my landing page</a>
-</section>
 
+<div class="status-page">
+    <div class="status-card">
+        <div class="status-icon status-icon-pending" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z" />
+                <path d="M12 8v4.5M12 16h.01" />
+            </svg>
+        </div>
+        <p class="eyebrow">Single Buyer · Repository access</p>
+        <h1>Access unavailable</h1>
+        <p>Your current role does not allow access to this page.</p>
+        <div class="status-actions">
+            <a class="button" href="access" data-enhance-nav="false">Go to my landing page</a>
+        </div>
+    </div>
+</div>

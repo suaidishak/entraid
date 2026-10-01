@@ -5,21 +5,27 @@
 @inject AuthenticationStateProvider AuthenticationState
 @inject NavigationManager Navigation
 
-<PageTitle>Protected identity test</PageTitle>
-<h1>LSS repository</h1>
+<PageTitle>Protected identity test | Single Buyer LSS Repository</PageTitle>
+
+<div class="page-head">
+    <p class="eyebrow">Single Buyer · Repository</p>
+    <h1>LSS repository</h1>
+    <p class="page-lead">This page requires an authenticated Entra session.</p>
+</div>
+
 <nav class="workspace-nav" aria-label="Workspace">
     <a href="access" data-enhance-nav="false">My landing page</a>
     <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
 </nav>
+
 <AuthorizeView>
     <Authorized>
-        <p>This page requires an authenticated Entra session.</p>
-        <section>
+        <section class="card">
             <h2>Server interactivity</h2>
             <p>Server button clicks: @clicks</p>
             <button @onclick="TestInteraction">Test server interaction</button>
         </section>
-        <section>
+        <section class="card">
             <h2>Identity claims</h2>
             <p>Claims may contain personal information. Tokens and credentials are not displayed.</p>
             <dl>
@@ -38,7 +44,6 @@
                 </table>
             </div>
         </section>
-        <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
     </Authorized>
 </AuthorizeView>
 
@@ -56,5 +61,3 @@
         clicks++;
     }
 }
-
-
