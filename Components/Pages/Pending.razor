@@ -1,0 +1,14 @@
+﻿@page "/pending"
+@attribute [Authorize(Policy = "SignedIn")]
+
+<PageTitle>Pending approval | Single Buyer LSS Repository</PageTitle>
+<p class="eyebrow">SINGLE BUYER · REPOSITORY ACCESS</p>
+<h1>Access pending approval</h1>
+<section>
+    <h2>Your Microsoft sign-in was successful</h2>
+    <p>Your account is registered. An LSS administrator must assign your role before you can access the repository.</p>
+    <p>You can check your approval status below. If you need assistance, contact your repository administrator.</p>
+    <a class="button" href="access" data-enhance-nav="false">Check approval status</a>
+</section>
+<a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+

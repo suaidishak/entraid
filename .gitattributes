@@ -1,0 +1,28 @@
+# Auto-detect text files and normalize line endings in the repository.
+* text=auto
+
+# Check out .NET source and project files with Windows (CRLF) endings.
+*.cs          text eol=crlf
+*.razor       text eol=crlf
+*.cshtml      text eol=crlf
+*.csproj      text eol=crlf
+*.sln         text eol=crlf
+*.slnx        text eol=crlf
+*.props       text eol=crlf
+*.targets     text eol=crlf
+*.json        text eol=crlf
+
+# Scripts and docs stay LF.
+*.sh          text eol=lf
+*.py          text eol=lf
+*.md          text eol=lf
+
+# Treat common binary types as binary.
+*.png         binary
+*.jpg         binary
+*.jpeg        binary
+*.gif         binary
+*.pdf         binary
+*.ico         binary
+*.woff        binary
+*.woff2       binary

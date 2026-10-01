@@ -1,0 +1,14 @@
+﻿bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+.env
+.env.*
+appsettings.Local.json
+artifacts/
+App_Data/
+reportsrepo/
+tmp/
+

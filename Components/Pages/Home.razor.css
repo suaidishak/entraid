@@ -1,0 +1,61 @@
+﻿.landing { display: grid; grid-template-columns: 1.2fr 1fr; min-height: 670px; border: 1px solid #dce4ed; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 65px #162f5010; }
+.overview { position: relative; margin: 0; padding: 48px; border: 0; border-radius: 0; background: linear-gradient(145deg, #102b4c, #091b32); color: #fff; overflow: hidden; }
+.overview-content { position: relative; z-index: 1; }
+.kicker { display: flex; align-items: center; gap: 10px; margin: 0 0 28px; color: #bad8fb; font-size: .72rem; font-weight: 650; letter-spacing: .17em; }
+.status-dot { width: 7px; height: 7px; background: #7fbcff; border-radius: 50%; box-shadow: 0 0 0 5px #7fbcff12; }
+h1 { margin: 0; font-size: clamp(2.1rem, 3.8vw, 3.3rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 650; }
+h1 span { color: #90c3ff; }
+h1:focus { outline: none; }
+.intro { max-width: 370px; margin: 24px 0 0; color: #d0dced; font-size: 1.05rem; line-height: 1.7; }
+.solar-scene { position: relative; height: 178px; margin: 12px -10px 16px; overflow: hidden; }
+.sun { position: absolute; right: 55px; top: 24px; width: 43px; height: 43px; border-radius: 50%; background: #d4e7ff; box-shadow: 0 0 0 14px #90c3ff09, 0 0 0 29px #90c3ff06; }
+.horizon { position: absolute; left: 0; right: 0; top: 96px; height: 1px; background: linear-gradient(90deg, transparent, #5684b5, transparent); }
+.solar-array { position: absolute; width: 235px; height: 75px; border: 1px solid #78ace0; background: repeating-linear-gradient(90deg, transparent 0 45px, #679ed180 45px 47px), repeating-linear-gradient(0deg, #194775 0 23px, #679ed180 23px 25px); transform: skewX(-26deg) rotate(-7deg); box-shadow: 7px 8px 0 #06162b; }
+.array-back { top: 67px; left: 116px; opacity: .6; transform: scale(.75) skewX(-26deg) rotate(-7deg); }
+.array-front { top: 82px; left: 28px; }
+.scene-label { position: absolute; bottom: 0; left: 10px; color: #b3c9df; font-size: .69rem; letter-spacing: .045em; }
+.information { border-top: 1px solid #ffffff24; padding-top: 24px; }
+.information h2 { font-size: 1rem; font-weight: 600; margin: 0 0 8px; }
+.information p { font-size: .86rem; color: #becfe2; margin: 0; max-width: 355px; }
+.topics { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 12px 20px; }
+.topics li { font-size: .74rem; color: #e1ebf6; }
+.topics span { color: #92bde9; font-size: .65rem; margin-right: 5px; }
+.access-panel { display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 48px; border: 0; border-radius: 0; background: #fff; }
+.access-content { width: 100%; max-width: 360px; margin: auto; padding: 25px 0; }
+.access-icon { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid #d9e7f6; background: #f0f6ff; color: #1b60ad; border-radius: 14px; margin-bottom: 30px; }
+.access-icon svg { width: 27px; height: 27px; }
+.panel-label { color: #536a84; font-size: .68rem; letter-spacing: .15em; font-weight: 650; margin: 0 0 12px; }
+.access-panel h2 { font-size: 2rem; letter-spacing: -.03em; line-height: 1.2; margin: 0 0 16px; color: #102b4c; }
+.panel-description { font-size: .96rem; color: #53637a; margin: 0 0 30px; overflow-wrap: anywhere; }
+.signin-button { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; padding: 14px 16px; border-radius: 7px; background: #155fbc; color: white; font-weight: 600; font-size: .9rem; text-decoration: none; border: 1px solid transparent; box-shadow: 0 4px 8px #155fbc16; }
+.signin-button:hover { background: #104c97; }
+.signin-button:focus-visible { outline: 3px solid #155fbc; outline-offset: 4px; box-shadow: 0 0 0 2px white; }
+.signin-button:disabled { background: #e6edf5; border-color: #ccd7e5; color: #4d6077; cursor: not-allowed; box-shadow: none; }
+.button-arrow { margin-left: auto; font-size: 1.15rem; }
+.microsoft-mark { display: grid; grid-template-columns: repeat(2, 8px); gap: 2px; flex-shrink: 0; background: white; padding: 3px; }
+.microsoft-mark i { width: 8px; height: 8px; background: #f25022; }
+.microsoft-mark i:nth-child(2) { background: #7fba00; }
+.microsoft-mark i:nth-child(3) { background: #00a4ef; }
+.microsoft-mark i:nth-child(4) { background: #ffb900; }
+.account-note { font-size: .8rem; text-align: center; line-height: 1.65; color: #586a80; max-width: 280px; margin: 18px auto 0; }
+.configuration-note { border-left: 3px solid #537ca7; padding-left: 12px; font-size: .8rem; color: #425873; margin: 18px 0 0; }
+.access-help { margin-top: 36px; padding-top: 24px; border-top: 1px solid #e3e9f0; }
+.access-help h3 { font-size: .81rem; margin: 0 0 6px; color: #293e57; }
+.access-help p { font-size: .79rem; color: #586a80; margin: 0; }
+.panel-footer { text-align: center; font-size: .7rem; color: #586a80; padding-top: 28px; }
+.panel-footer span { margin-right: 6px; }
+@media (max-width: 900px) { .overview, .access-panel { padding: 34px; } .topics { flex-direction: column; gap: 8px; } }
+@media (max-width: 680px) {
+    .landing { grid-template-columns: 1fr; border-radius: 12px; }
+    .overview, .access-panel { padding: 30px 24px; }
+    h1 { font-size: 2.45rem; }
+    .kicker { margin-bottom: 22px; }
+    .solar-scene { height: 155px; }
+    .scene-label { display: none; }
+    .topics { flex-direction: row; gap: 12px; }
+    .access-content { max-width: none; padding: 4px 0; }
+    .access-icon { margin-bottom: 22px; }
+    .panel-footer { padding-top: 30px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+

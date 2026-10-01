@@ -1,0 +1,9 @@
+﻿@page "/access-denied"
+@attribute [Authorize(Policy = "SignedIn")]
+<PageTitle>Access unavailable | Single Buyer LSS Repository</PageTitle>
+<h1>Access unavailable</h1>
+<section>
+    <p>Your current role does not allow access to this page.</p>
+    <a class="button" href="access" data-enhance-nav="false">Go to my landing page</a>
+</section>
+

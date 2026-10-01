@@ -1,0 +1,89 @@
+﻿@page "/admin"
+@attribute [Authorize(Policy = "Admin")]
+@using Lss.EntraLoginTest.Access
+@inject UserRegistry Registry
+
+<PageTitle>User administration | Single Buyer LSS Repository</PageTitle>
+<p class="eyebrow">SINGLE BUYER · ADMINISTRATION</p>
+<h1>User access registry</h1>
+<p>Approve staff and manage LSS access. Changes are stored in SQL Server.</p>
+<nav class="workspace-nav" aria-label="Workspace">
+    <a href="protected" data-enhance-nav="false">Repository</a>
+    <a href="admin/email" data-enhance-nav="false">Daily report email</a>
+    <a href="admin" data-enhance-nav="false">Refresh user list</a>
+    <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+</nav>
+<div class="registry-summary">
+    <section><h2>Awaiting approval</h2><strong>@users.Count(user => user.Role == AppRole.Pending)</strong></section>
+    <section><h2>Approved staff</h2><strong>@users.Count(user => user.Role == AppRole.Staff)</strong></section>
+    <section><h2>Revoked</h2><strong>@users.Count(user => user.Role == AppRole.Revoked)</strong></section>
+</div>
+@if (Saved) { <p class="access-notice" role="status">Access updated successfully.</p> }
+<section>
+    <h2>Registered users (@users.Count)</h2>
+    <p>Includes provisioned accounts and Microsoft sign-ins. Recently active means activity within 15 minutes, not a live session count. Times are UTC.</p>
+    <div class="table-scroll">
+        <table>
+            <thead><tr><th scope="col">User</th><th scope="col">Status / Role</th><th scope="col">Last activity</th><th scope="col">Last sign-in</th><th scope="col">Manage access</th></tr></thead>
+            <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td><strong>@user.Name</strong><br />@user.Email</td>
+                    <td>@user.Status / @user.DatabaseRole</td>
+                    <td>@(user.LastActivity > DateTimeOffset.UtcNow.AddMinutes(-15) ? "Recently active" : "Inactive")<br /><small>@Time(user.LastActivity)</small></td>
+                    <td>@Time(user.LastSignIn)</td>
+                    <td>
+                        @if (user.Role == AppRole.Admin)
+                        {
+                            <span class="role-badge">Active administrator</span>
+                        }
+                        else
+                        {
+                            <form method="post" action="/admin/role" class="role-form" data-enhance="false">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="userKey" value="@user.Key" />
+                                <input type="hidden" name="version" value="@user.AuthorizationVersion" />
+                                <label class="sr-only" for="@("role-" + user.Id)">Access for @user.Email</label>
+                                <select id="@("role-" + user.Id)" name="role" required>
+                                    <option value="" selected="@(user.Role == AppRole.Pending)" disabled>Choose action</option>
+                                    <option value="Staff" selected="@(user.Role == AppRole.Staff)">Approve / restore Staff</option>
+                                    <option value="Revoked" selected="@(user.Role == AppRole.Revoked)">Revoke access</option>
+                                </select>
+                                <button type="submit">Save<span class="sr-only"> access for @user.Email</span></button>
+                            </form>
+                            @if (user.Role == AppRole.Staff)
+                            {
+                                <details>
+                                    <summary>Transfer administration</summary>
+                                    <p>This makes @user.Email the only Admin. Your access becomes Staff.</p>
+                                    <form method="post" action="/admin/transfer" data-enhance="false">
+                                        <AntiforgeryToken />
+                                        <input type="hidden" name="userKey" value="@user.Key" />
+                                        <input type="hidden" name="version" value="@user.AuthorizationVersion" />
+                                        <label><input type="checkbox" name="confirm" value="yes" required /> I confirm the administrator transfer.</label>
+                                        <button type="submit">Transfer to this user</button>
+                                    </form>
+                                </details>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
+<section>
+    <h2>Access rules</h2>
+    <p>Pending users cannot access the repository. Approved Staff can use repository pages. Revoked users remain recorded but cannot use repository pages. Exactly one approved Admin manages access.</p>
+    <p>Transfers and access changes are audited. The original bootstrap identity is historical information and does not permanently grant Admin rights.</p>
+</section>
+@code {
+    [CascadingParameter] public HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromQuery(Name = "saved")] public bool Saved { get; set; }
+    private IReadOnlyList<RegisteredUser> users = [];
+    protected override void OnInitialized() => users = Registry.List(HttpContext.User);
+    private static string Time(DateTimeOffset? value) => value?.ToString("yyyy-MM-dd HH:mm 'UTC'") ?? "Not yet";
+}
+

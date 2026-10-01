@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "LssDatabase": "Server=localhost\\SQLEXPRESS;Database=LSSRepo;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;Connect Timeout=10"
+  }
+}

@@ -1,0 +1,21 @@
+﻿@page
+@model Microsoft.Identity.Web.UI.Areas.MicrosoftIdentity.Pages.Account.SignedOutModel
+@{
+    Layout = null;
+    Response.Headers.CacheControl = "no-store";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="@Url.Content("~/")" />
+    <title>Signed out | Single Buyer LSS Repository</title>
+    <link rel="stylesheet" href="@Url.Content("~/app.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Lss.EntraLoginTest.styles.css")" />
+</head>
+<body>
+    @(await Html.RenderComponentAsync<Lss.EntraLoginTest.Components.Pages.SignedOutLanding>(Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Static))
+</body>
+</html>
+

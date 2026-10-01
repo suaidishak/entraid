@@ -1,0 +1,10 @@
+﻿.report-check { max-width: 850px; padding: 32px; }
+.report-check h2 { margin-top: 0; color: #102b4c; }
+.report-check button { min-height: 50px; margin: 12px 0; }
+.report-check button:disabled { background: #53637a; cursor: wait; }
+.report-status { margin-top: 24px; padding: 20px; border-left: 4px solid #155fbc; background: #edf4fc; overflow-wrap: anywhere; }
+.report-status h3 { margin: 0; font-size: 1rem; }
+.report-status p:last-child { margin-bottom: 0; }
+.report-note { color: #53637a; font-size: .85rem; margin-top: 24px; }
+@media (max-width: 680px) { .report-check { padding: 22px; } .report-check button { width: 100%; } }
+

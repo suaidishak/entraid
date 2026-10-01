@@ -1,0 +1,42 @@
+﻿* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", sans-serif; background: #f3f6fa; color: #172638; line-height: 1.6; }
+header { padding: 1rem 5%; background: #172638; }
+header a { color: white; text-decoration: none; font-weight: 600; }
+main { max-width: 960px; margin: 3rem auto; padding: 0 1.5rem; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; }
+h2 { font-size: 1.25rem; }
+.eyebrow { font-size: .8rem; letter-spacing: .12em; color: #466078; }
+section { margin: 1.5rem 0; padding: 1.5rem; background: white; border: 1px solid #d7e0eb; border-radius: .7rem; }
+a { color: #075bb5; }
+button, .button { display: inline-block; border: 0; border-radius: .35rem; padding: .7rem 1rem; background: #075bb5; color: white; font: inherit; text-decoration: none; cursor: pointer; }
+a:focus-visible, button:focus-visible { outline: 3px solid #b96400; outline-offset: 4px; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .9rem; }
+th, td { padding: .75rem; border-bottom: 1px solid #d7e0eb; overflow-wrap: anywhere; }
+dt { font-weight: 600; } dd { margin: 0 0 1rem; }
+
+/* Shared repository shell; page-specific styling lives with Home.razor. */
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px max(24px, calc((100vw - 1180px) / 2)); background: #fff; border-bottom: 1px solid #e1e7ee; }
+.site-header .brand { display: flex; align-items: center; gap: 12px; color: #122e50; font-size: 1.05rem; line-height: 1.3; }
+.brand-symbol { position: relative; display: grid; place-items: center; width: 42px; height: 42px; background: #102b4c; color: white; border-radius: 9px; font-size: .9rem; letter-spacing: -.04em; }
+.brand-symbol span { position: absolute; width: 13px; height: 3px; background: #71b6ff; bottom: 7px; right: 8px; }
+.brand-subtitle { display: block; font-size: .58rem; font-weight: 600; letter-spacing: .14em; margin-top: 4px; color: #526a83; }
+.header-caption { font-size: .78rem; color: #586a80; }
+main { max-width: 1180px; margin: 40px auto 24px; padding: 0 24px; }
+.site-footer { max-width: 1180px; margin: 0 auto; padding: 0 24px 28px; display: flex; justify-content: space-between; gap: 16px; font-size: .7rem; color: #586a80; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 1001; padding: 12px 18px; background: #fff; color: #102b4c; border: 2px solid #155fbc; }
+.skip-link:focus { top: 10px; }
+main:focus { outline: none; }
+@media (max-width: 680px) { .header-caption { display: none; } .site-header { padding: 18px 20px; } main { margin-top: 20px; padding: 0 16px; } .site-footer { padding: 0 20px 24px; flex-wrap: wrap; } }
+.workspace-nav { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0; }
+.access-notice { padding: 16px 20px; background: #e9f3ff; border-left: 4px solid #155fbc; color: #173e6b; }
+.role-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.role-form select { min-height: 44px; padding: 8px; border: 1px solid #7a8da3; border-radius: 4px; font: inherit; color: #172638; background: white; }
+select:focus-visible { outline: 3px solid #155fbc; outline-offset: 3px; }
+.role-badge { display: inline-block; padding: 6px 10px; background: #e9f3ff; border-radius: 5px; color: #173e6b; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.registry-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.registry-summary section { margin: 12px 0; }
+.registry-summary h2 { color: #53637a; font-size: .85rem; margin: 0 0 8px; }
+.registry-summary strong { font-size: 2rem; color: #102b4c; }
+@media (max-width: 680px) { .registry-summary { grid-template-columns: 1fr; gap: 0; } }

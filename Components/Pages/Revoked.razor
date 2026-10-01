@@ -1,0 +1,11 @@
+﻿@page "/revoked"
+@attribute [Authorize(Policy = "SignedIn")]
+<PageTitle>Access revoked | Single Buyer LSS Repository</PageTitle>
+<h1>Your LSS access has been revoked</h1>
+<section>
+    <p>Your Microsoft sign-in is valid, but your LSS repository access has been removed.</p>
+    <p>Contact the LSS administrator if you need your access restored.</p>
+    <a class="button" href="access" data-enhance-nav="false">Check access status</a>
+</section>
+<a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+

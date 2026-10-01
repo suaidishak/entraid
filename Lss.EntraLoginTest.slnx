@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/AccessTests/AccessTests.csproj" />
+  </Folder>
+  <Project Path="Lss.EntraLoginTest.csproj" />
+</Solution>

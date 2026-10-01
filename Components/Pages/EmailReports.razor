@@ -1,0 +1,48 @@
+﻿@page "/admin/email"
+@attribute [Authorize(Policy = "Admin")]
+
+<PageTitle>Daily report email | Single Buyer LSS Repository</PageTitle>
+<p class="eyebrow">SINGLE BUYER · DAILY REPORT SIMULATION</p>
+<h1>Check and email the daily report</h1>
+<nav class="workspace-nav" aria-label="Workspace">
+    <a href="admin" data-enhance-nav="false">User administration</a>
+    <a href="protected" data-enhance-nav="false">Repository</a>
+    <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+</nav>
+<section class="report-check">
+    <h2>Report delivery</h2>
+    <p>Check <strong>reportsrepo</strong> for a report and send it to <strong>suaid.ishak@sae-malaysia.com</strong>.</p>
+    <p>If several files exist, the most recently modified file is selected. One non-empty report up to 2 MB is sent per click.</p>
+    <form method="post" action="/admin/email/check-send" data-enhance="false"
+          onsubmit="this.querySelector('button').disabled=true; this.querySelector('button').textContent='Checking and sending…';">
+        <AntiforgeryToken />
+        <button type="submit">Check reports and send</button>
+    </form>
+    <div class="report-status" role="status" aria-live="polite">
+        <h3>Status</h3>
+        <p>@StatusMessage</p>
+        @if (!string.IsNullOrEmpty(FileName) && Status is "accepted" or "unconfirmed" or "configuration")
+        {
+            <p>File found: <strong>@FileName</strong></p>
+        }
+    </div>
+    <p class="report-note">Files remain in the folder. Clicking again after completion sends the latest file again. This button simulates the future plant API trigger; daily scheduling is not enabled yet.</p>
+</section>
+
+@code {
+    [SupplyParameterFromQuery(Name = "status")] public string? Status { get; set; }
+    [SupplyParameterFromQuery(Name = "file")] public string? FileName { get; set; }
+    private string StatusMessage => Status switch
+    {
+        "accepted" => "File found. Microsoft accepted the email for sending to suaid.ishak@sae-malaysia.com. Check the inbox or Sent Items to confirm delivery.",
+        "empty" => "No report file found. No email was sent.",
+        "missing" => "The reportsrepo directory was not found. No email was sent.",
+        "invalid-file" => "A report file was found, but it is empty, too large, or has an unsupported filename. No email was sent.",
+        "file-error" => "The report folder or file could not be read. It may still be in use. No email was sent.",
+        "configuration" => "File found, but application authentication failed. Check the app credentials and Microsoft Graph application Mail.Send permission. No email was submitted.",
+        "unconfirmed" => "File found, but sending could not be confirmed. Check Sent Items before retrying. Verify application Mail.Send permission and the sender mailbox.",
+        "busy" => "Another report check is in progress. Wait for it to complete before trying again.",
+        _ => "Ready. The report directory has not been checked yet."
+    };
+}
+

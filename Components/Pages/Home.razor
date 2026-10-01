@@ -1,0 +1,77 @@
+﻿@page "/"
+@inject EntraSetup Setup
+
+<PageTitle>Single Buyer LSS Repository</PageTitle>
+
+<div class="landing">
+    <section class="overview" aria-labelledby="repository-title">
+        <div class="overview-content">
+            <p class="kicker"><span class="status-dot" aria-hidden="true"></span> LARGE SCALE SOLAR</p>
+            <h1 id="repository-title">Single Buyer<br /><span>LSS Repository</span></h1>
+            <p class="intro">Access solar generation data, forecasts and plant reporting.</p>
+            <div class="solar-scene" aria-hidden="true">
+                <div class="sun"></div>
+                <div class="horizon"></div>
+                <div class="solar-array array-back"></div>
+                <div class="solar-array array-front"></div>
+                <span class="scene-label">A clearer view of solar generation</span>
+            </div>
+            <div class="information">
+                <h2>One place for LSS project information</h2>
+                <p>A shared starting point for your solar generation and reporting activities.</p>
+                <ul class="topics">
+                    <li><span aria-hidden="true">01</span> Generation data</li>
+                    <li><span aria-hidden="true">02</span> Forecasts</li>
+                    <li><span aria-hidden="true">03</span> Plant reporting</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="access-panel" aria-labelledby="access-title">
+        <div class="access-content">
+            <div class="access-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <rect x="5" y="10" width="14" height="11" rx="2" />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" />
+                </svg>
+            </div>
+            <p class="panel-label">REPOSITORY ACCESS</p>
+            <AuthorizeView>
+                <Authorized>
+                    <h2 id="access-title">Welcome back</h2>
+                    <p class="panel-description">You are signed in as <strong>@context.User.Identity?.Name</strong>.</p>
+                    <a class="signin-button" href="access" data-enhance-nav="false">Continue to repository <span aria-hidden="true">→</span></a>
+                    <p class="account-note"><a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a></p>
+                </Authorized>
+                <NotAuthorized>
+                    <h2 id="access-title">Welcome</h2>
+                    <p class="panel-description">Sign in to access the Single Buyer LSS Repository.</p>
+                    @if (Setup.IsConfigured)
+                    {
+                        <a class="signin-button" href="MicrosoftIdentity/Account/SignIn" data-enhance-nav="false">
+                            <span class="microsoft-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                            Sign in with Microsoft
+                            <span class="button-arrow" aria-hidden="true">→</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <button class="signin-button" disabled aria-describedby="configuration-message">
+                            <span class="microsoft-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                            Sign in with Microsoft
+                        </button>
+                        <p class="configuration-note" id="configuration-message" role="status">Sign-in is not available yet. Please contact your repository administrator to complete the setup.</p>
+                    }
+                    <p class="account-note">Use your authorised corporate Microsoft 365 account.</p>
+                </NotAuthorized>
+            </AuthorizeView>
+            <div class="access-help">
+                <h3>Need help signing in?</h3>
+                <p>Contact your organisation’s IT support or repository administrator.</p>
+            </div>
+        </div>
+        <div class="panel-footer"><span aria-hidden="true">◇</span> Single Buyer · Large Scale Solar</div>
+    </section>
+</div>
+

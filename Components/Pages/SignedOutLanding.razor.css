@@ -1,0 +1,47 @@
+﻿.logout-landing { display: grid; grid-template-columns: 1.2fr 1fr; min-height: 670px; border: 1px solid #dce4ed; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 65px #162f5010; }
+.logout-overview { margin: 0; padding: 48px; border: 0; border-radius: 0; background: linear-gradient(145deg, #102b4c, #091b32); color: white; overflow: hidden; }
+.logout-kicker { display: flex; align-items: center; gap: 10px; margin: 0 0 28px; color: #bad8fb; font-size: .72rem; font-weight: 650; letter-spacing: .17em; }
+.logout-kicker span { width: 7px; height: 7px; background: #7fbcff; border-radius: 50%; box-shadow: 0 0 0 5px #7fbcff12; }
+h1 { margin: 0; font-size: clamp(2.1rem, 3.8vw, 3.3rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 650; }
+h1 span { color: #90c3ff; }
+.logout-intro { max-width: 370px; margin: 24px 0 0; color: #d0dced; font-size: 1.05rem; line-height: 1.7; }
+.logout-art { position: relative; height: 180px; margin: 12px 0 16px; overflow: hidden; }
+.sun { position: absolute; right: 45px; top: 24px; width: 43px; height: 43px; border-radius: 50%; background: #d4e7ff; box-shadow: 0 0 0 14px #90c3ff09, 0 0 0 29px #90c3ff06; }
+.panel { position: absolute; top: 82px; left: 28px; width: 235px; height: 75px; border: 1px solid #78ace0; background: repeating-linear-gradient(90deg, transparent 0 45px, #679ed180 45px 47px), repeating-linear-gradient(0deg, #194775 0 23px, #679ed180 23px 25px); transform: skewX(-26deg) rotate(-7deg); box-shadow: 7px 8px 0 #06162b; }
+.panel-back { top: 67px; left: 116px; opacity: .6; transform: scale(.75) skewX(-26deg) rotate(-7deg); }
+.logout-information { border-top: 1px solid #ffffff24; padding-top: 24px; }
+.logout-information h2 { font-size: 1rem; font-weight: 600; margin: 0 0 8px; }
+.logout-information p { font-size: .86rem; color: #becfe2; margin: 0; max-width: 355px; }
+.logout-information ul { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 12px 20px; font-size: .74rem; color: #e1ebf6; }
+.logout-panel { display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 48px; border: 0; border-radius: 0; background: white; }
+.logout-content { width: 100%; max-width: 360px; margin: auto; padding: 16px 0; }
+.confirmation-icon { display: grid; place-items: center; width: 56px; height: 56px; border: 1px solid #d9e7f6; background: #f0f6ff; color: #1b60ad; border-radius: 50%; margin-bottom: 28px; }
+.confirmation-icon svg { width: 30px; height: 30px; }
+.logout-label { color: #536a84; font-size: .68rem; letter-spacing: .15em; font-weight: 650; margin: 0 0 12px; }
+.logout-panel h2 { font-size: 2rem; letter-spacing: -.03em; line-height: 1.2; margin: 0 0 16px; color: #102b4c; }
+.logout-description { font-size: .96rem; color: #53637a; margin: 0 0 28px; }
+.logout-signin { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; padding: 14px 16px; border-radius: 7px; background: #155fbc; color: white; font-weight: 600; font-size: .9rem; text-decoration: none; }
+.logout-signin:hover { background: #104c97; }
+.logout-signin:focus-visible { outline: 3px solid #155fbc; outline-offset: 4px; }
+.arrow { margin-left: auto; }
+.microsoft-mark { display: grid; grid-template-columns: repeat(2, 8px); gap: 2px; flex-shrink: 0; background: white; padding: 3px; }
+.microsoft-mark i { width: 8px; height: 8px; background: #f25022; }
+.microsoft-mark i:nth-child(2) { background: #7fba00; }
+.microsoft-mark i:nth-child(3) { background: #00a4ef; }
+.microsoft-mark i:nth-child(4) { background: #ffb900; }
+.logout-account { font-size: .8rem; text-align: center; color: #586a80; max-width: 280px; margin: 18px auto; }
+.return-home { display: block; width: fit-content; margin: 24px auto 0; font-size: .85rem; font-weight: 600; text-underline-offset: 4px; }
+.logout-help { margin-top: 30px; padding-top: 24px; border-top: 1px solid #e3e9f0; }
+.logout-help h3 { font-size: .81rem; margin: 0 0 6px; color: #293e57; }
+.logout-help p { font-size: .79rem; color: #586a80; margin: 0; }
+.logout-footer { text-align: center; font-size: .7rem; color: #586a80; padding-top: 24px; margin: 0; }
+@media (max-width: 900px) { .logout-overview, .logout-panel { padding: 34px; } }
+@media (max-width: 680px) {
+    .logout-landing { grid-template-columns: 1fr; border-radius: 12px; }
+    .logout-overview, .logout-panel { padding: 30px 24px; }
+    h1 { font-size: 2.45rem; }
+    .logout-art { display: none; }
+    .logout-information { margin-top: 24px; }
+    .logout-content { max-width: none; padding: 4px 0; }
+}
+

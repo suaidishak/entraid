@@ -1,0 +1,60 @@
+﻿@page "/protected"
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject Lss.EntraLoginTest.Access.UserRegistry Registry
+@inject AuthenticationStateProvider AuthenticationState
+@inject NavigationManager Navigation
+
+<PageTitle>Protected identity test</PageTitle>
+<h1>LSS repository</h1>
+<nav class="workspace-nav" aria-label="Workspace">
+    <a href="access" data-enhance-nav="false">My landing page</a>
+    <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+</nav>
+<AuthorizeView>
+    <Authorized>
+        <p>This page requires an authenticated Entra session.</p>
+        <section>
+            <h2>Server interactivity</h2>
+            <p>Server button clicks: @clicks</p>
+            <button @onclick="TestInteraction">Test server interaction</button>
+        </section>
+        <section>
+            <h2>Identity claims</h2>
+            <p>Claims may contain personal information. Tokens and credentials are not displayed.</p>
+            <dl>
+                <dt>Name</dt><dd>@context.User.Identity?.Name</dd>
+                <dt>Authentication type</dt><dd>@context.User.Identity?.AuthenticationType</dd>
+            </dl>
+            <div class="table-scroll">
+                <table>
+                    <thead><tr><th scope="col">Claim</th><th scope="col">Value</th></tr></thead>
+                    <tbody>
+                        @foreach (var claim in context.User.Claims.OrderBy(claim => claim.Type))
+                        {
+                            <tr><td>@claim.Type</td><td>@claim.Value</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private int clicks;
+    private async Task TestInteraction()
+    {
+        var principal = (await AuthenticationState.GetAuthenticationStateAsync()).User;
+        if (Registry.Current(principal)?.Role is not (Lss.EntraLoginTest.Access.AppRole.Admin or Lss.EntraLoginTest.Access.AppRole.Staff))
+        {
+            Navigation.NavigateTo("/access", forceLoad: true);
+            return;
+        }
+        Registry.RecordActivity(principal);
+        clicks++;
+    }
+}
+
+
