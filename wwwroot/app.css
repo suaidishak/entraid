@@ -153,6 +153,11 @@ section { margin: 1.25rem 0; padding: 1.5rem; background: var(--surface); border
 
 a:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
+/* Blazor's FocusOnNavigate moves focus to the page heading, and the skip link
+   targets main; neither should draw a visual focus ring (screen readers still
+   receive the focus change). */
+h1:focus, h2:focus, h3:focus, [tabindex="-1"]:focus { outline: none; }
+
 /* --------------------------------------------------------- Workspace nav - */
 .workspace-nav { display: flex; flex-wrap: wrap; gap: .6rem; margin: 0 0 1.5rem; padding: 0; }
 .workspace-nav a {
