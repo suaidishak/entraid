@@ -115,20 +115,20 @@ main:focus { outline: none; }
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: .5rem 1.75rem;
+    gap: .75rem 2rem;
     margin: 0 0 1.75rem;
-    padding: 1.15rem 1.4rem;
+    padding: 1.1rem 1.4rem;
     background: linear-gradient(180deg, #ffffff 0%, var(--surface-soft) 100%);
     border: 1px solid var(--line);
     border-left: 4px solid var(--brand);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
 }
-.page-head-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .7rem; min-width: 0; }
-.page-head-main .eyebrow { margin: 0; letter-spacing: .1em; }
-.page-head-main h1 { margin: 0; }
+.page-head-main { min-width: 240px; }
+.page-head-main .eyebrow { margin: 0 0 .25rem; letter-spacing: .1em; }
+.page-head-main h1 { margin: 0; font-size: clamp(1.5rem, 2.2vw, 1.75rem); }
 .eyebrow { display: block; margin: 0 0 .5rem; color: var(--brand); font-size: .74rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-.page-lead { color: var(--muted); flex: 1 1 220px; text-align: right; margin: 0; }
+.page-lead { color: var(--muted); flex: 1 1 300px; max-width: 440px; margin: 0; }
 
 /* --------------------------------------------------------------- Cards -- */
 section { margin: 1.25rem 0; padding: 1.5rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
