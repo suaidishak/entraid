@@ -20,12 +20,15 @@ public sealed class TestDatabase : IDisposable
         try
         {
             var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../"));
-            var schema = File.ReadAllText(Path.Combine(root, "database/001_create_access_schema.sql"))
-                .Replace("USE [LSSRepo];", $"USE [{name}];");
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
-            foreach (var batch in Regex.Split(schema, @"^GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase))
-                if (!string.IsNullOrWhiteSpace(batch)) new SqlCommand(batch, connection).ExecuteNonQuery();
+            foreach (var file in new[] { "database/001_create_access_schema.sql", "database/003_create_repository_schema.sql" })
+            {
+                var schema = File.ReadAllText(Path.Combine(root, file))
+                    .Replace("USE [LSSRepo];", $"USE [{name}];");
+                foreach (var batch in Regex.Split(schema, @"^GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase))
+                    if (!string.IsNullOrWhiteSpace(batch)) new SqlCommand(batch, connection).ExecuteNonQuery();
+            }
             new SqlCommand("""
                 INSERT lss.SystemSetup (SetupId,TenantId) VALUES (1,'11111111-1111-1111-1111-111111111111');
                 INSERT lss.Users (TenantId,EntraObjectId,DisplayName,Email,StatusCode,RoleCode)
@@ -42,6 +45,17 @@ public sealed class TestDatabase : IDisposable
         connection.Open();
         using var command = new SqlCommand(sql, connection);
         return (int)command.ExecuteScalar()!;
+    }
+
+    public IReadOnlyList<string> Strings(string sql)
+    {
+        using var connection = new SqlConnection(ConnectionString);
+        connection.Open();
+        using var command = new SqlCommand(sql, connection);
+        using var reader = command.ExecuteReader();
+        var values = new List<string>();
+        while (reader.Read()) values.Add(reader.IsDBNull(0) ? "" : reader.GetValue(0).ToString()!);
+        return values;
     }
     private static void Execute(string connectionString, string sql)
     {

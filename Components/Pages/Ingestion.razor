@@ -1,0 +1,174 @@
+@page "/admin/ingestion"
+@attribute [Authorize(Policy = "Admin")]
+@using Lss.EntraLoginTest.Ingestion
+@inject IngestionRepository Repository
+
+<PageTitle>Data collection | Single Buyer LSS Repository</PageTitle>
+
+<div class="page-head">
+    <div class="page-head-main">
+        <p class="eyebrow">Single Buyer · Data collection</p>
+        <h1>LSS data collection</h1>
+    </div>
+    <p class="page-lead">Collect DDQ forecast and MMF data from LSS plant APIs, with anomaly detection and audit history.</p>
+</div>
+
+<nav class="workspace-nav" aria-label="Workspace">
+    <a href="admin" data-enhance-nav="false">User administration</a>
+    <a href="admin/email" data-enhance-nav="false">Daily report email</a>
+    <a href="MicrosoftIdentity/Account/SignOut" data-enhance-nav="false">Sign out</a>
+</nav>
+
+@if (Status == "busy")
+{
+    <p class="notice notice-warning" role="status">A collection run is already in progress.</p>
+}
+else if (Status == "error")
+{
+    <p class="notice notice-danger" role="status">Collection failed: @Detail</p>
+}
+else if (Status == "done")
+{
+    <p class="notice notice-success" role="status">Run #@Run (@Result) complete — @Readings readings stored, @Anomalies anomalies recorded.</p>
+}
+
+@if (SchemaError is not null)
+{
+    <section class="card">
+        <h2>Repository schema not initialised</h2>
+        <p>@SchemaError</p>
+        <p>Run <code>database/003_create_repository_schema.sql</code> against LSSRepo, then reload this page.</p>
+    </section>
+}
+else
+{
+    <section class="card">
+        <h2>Run collection</h2>
+        <p>Collects every DDQ feed (rolling 24 hours, day ahead, week ahead, four months ahead) and MMF for all configured
+            sites. A failure on one endpoint is recorded as an anomaly and does not stop the run.</p>
+        <form method="post" action="/admin/ingestion/run" data-enhance="false">
+            <AntiforgeryToken />
+            <button type="submit">Run collection now</button>
+        </form>
+    </section>
+
+    <div class="registry-summary">
+        <section class="stat-pending"><h2>Sites</h2><strong>@totals.Sites</strong></section>
+        <section class="stat-staff"><h2>Forecast readings</h2><strong>@totals.ForecastReadings.ToString("N0")</strong></section>
+        <section class="stat-revoked"><h2>Anomalies</h2><strong>@totals.Anomalies.ToString("N0")</strong></section>
+    </div>
+
+    <section class="card">
+        <div class="card-head">
+            <h2>Recent runs</h2>
+            <p>Most recent collection runs, newest first. MMF readings: @totals.MmfReadings.ToString("N0").</p>
+        </div>
+        @if (runs.Count == 0)
+        {
+            <p class="muted">No collection runs yet.</p>
+        }
+        else
+        {
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Run</th><th scope="col">Trigger</th><th scope="col">Status</th>
+                            <th scope="col">Endpoints</th><th scope="col">Readings</th><th scope="col">Anomalies</th>
+                            <th scope="col">Started (UTC)</th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var run in runs)
+                    {
+                        <tr>
+                            <td>#@run.RunId</td>
+                            <td>@run.Trigger</td>
+                            <td><span class="badge @Badge(run.Status)">@run.Status</span></td>
+                            <td>@run.Succeeded / @run.Attempted@(run.Failed > 0 ? $" ({run.Failed} failed)" : "")</td>
+                            <td>@run.ReadingsInserted.ToString("N0")</td>
+                            <td>@run.AnomaliesInserted.ToString("N0")</td>
+                            <td>@run.StartedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    <section class="card">
+        <div class="card-head">
+            <h2>Recent anomalies</h2>
+            <p>Null timestamps, missing/negative/out-of-range values, unsupported intervals and failed requests are recorded here.</p>
+        </div>
+        @if (anomalies.Count == 0)
+        {
+            <p class="muted">No anomalies recorded.</p>
+        }
+        else
+        {
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Site</th><th scope="col">Feed</th><th scope="col">Code</th>
+                            <th scope="col">Interval</th><th scope="col">Detail</th><th scope="col">Detected (UTC)</th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var anomaly in anomalies)
+                    {
+                        <tr>
+                            <td>@anomaly.SiteCode</td>
+                            <td>@anomaly.FeedCode</td>
+                            <td><span class="badge @AnomalyBadge(anomaly.AnomalyCode)">@anomaly.AnomalyCode</span></td>
+                            <td>@(anomaly.IntervalNumber?.ToString() ?? "—")</td>
+                            <td>@anomaly.Detail</td>
+                            <td>@anomaly.DetectedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+}
+
+@code {
+    [SupplyParameterFromQuery(Name = "status")] public string? Status { get; set; }
+    [SupplyParameterFromQuery(Name = "result")] public string? Result { get; set; }
+    [SupplyParameterFromQuery(Name = "run")] public long? Run { get; set; }
+    [SupplyParameterFromQuery(Name = "readings")] public int? Readings { get; set; }
+    [SupplyParameterFromQuery(Name = "anomalies")] public int? Anomalies { get; set; }
+    [SupplyParameterFromQuery(Name = "detail")] public string? Detail { get; set; }
+
+    private IngestionTotals totals = new(0, 0, 0, 0, 0);
+    private IReadOnlyList<IngestionRunSummary> runs = [];
+    private IReadOnlyList<AnomalySummary> anomalies = [];
+    private string? SchemaError;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            totals = Repository.Totals();
+            runs = Repository.RecentRuns(10);
+            anomalies = Repository.RecentAnomalies(15);
+        }
+        catch (Exception exception)
+        {
+            SchemaError = exception.Message;
+        }
+    }
+
+    private static string Badge(string status) => status switch
+    {
+        "Completed" => "badge-staff",
+        "CompletedWithAnomalies" => "badge-pending",
+        "Failed" => "badge-revoked",
+        _ => "badge-admin"
+    };
+
+    private static string AnomalyBadge(string code) => code switch
+    {
+        "RequestFailed" or "ParseFailed" or "NegativeValue" or "OutOfRange" => "badge-revoked",
+        _ => "badge-pending"
+    };
+}

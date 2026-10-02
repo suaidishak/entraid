@@ -8,6 +8,8 @@ using Lss.EntraLoginTest.Access;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Antiforgery;
 using Lss.EntraLoginTest.Email;
+using Lss.EntraLoginTest.Ingestion;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Configuration.GetConnectionString("LssDatabase") is null)
@@ -33,6 +35,21 @@ builder.Services.AddHttpClient("ReportMail", client => client.Timeout = TimeSpan
 builder.Services.AddScoped<IReportMailSender, GraphReportMailSender>();
 builder.Services.AddSingleton<ReportDirectory>();
 builder.Services.AddSingleton<UserRegistry>();
+// API collection / ingestion module.
+builder.Services.Configure<IngestionOptions>(builder.Configuration.GetSection("Ingestion"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<IngestionOptions>>().Value);
+builder.Services.AddSingleton(sp => new AnomalyDetector(sp.GetRequiredService<IngestionOptions>()));
+builder.Services.AddSingleton<IngestionRepository>();
+builder.Services.AddHttpClient("LssApi", client => client.Timeout = TimeSpan.FromSeconds(60));
+builder.Services.AddSingleton<ILssDataSource>(sp =>
+{
+    var options = sp.GetRequiredService<IngestionOptions>();
+    return options.IsSampleMode
+        ? new SampleDataLssDataSource(options)
+        : new HttpLssDataSource(sp.GetRequiredService<IHttpClientFactory>().CreateClient("LssApi"), options);
+});
+builder.Services.AddSingleton<IngestionService>();
+builder.Services.AddHostedService<IngestionBackgroundService>();
 builder.Services.AddSingleton<IAuthorizationHandler, RegistryAuthorization>();
 builder.Services.AddAuthorization(options =>
 {

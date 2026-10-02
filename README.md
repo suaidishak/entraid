@@ -149,6 +149,61 @@ The registry lists provisioned users and users who have accessed the app — **n
 
 Authentication links perform full navigations so Microsoft Identity UI can update cookies. `/signin-oidc`, `/signout-callback-oidc`, and `/signout-oidc` remain authentication middleware endpoints. Entra may show its account picker and may sign you back in via organizational SSO — use a separate browser profile to test another account.
 
+## Data collection (API ingestion)
+
+The collection module pulls **DDQ forecast (XML)** and **MMF (JSON)** responses from LSS plant APIs, detects anomalies, and stores everything in a `repo` schema in MSSQL. It implements the TOR collection requirements: many API endpoints, timestamping, anomaly detection, and audit history.
+
+### One-time schema setup
+
+Run `database/003_create_repository_schema.sql` against `LSSRepo` once:
+
+```powershell
+sqlcmd -S "localhost\SQLEXPRESS" -E -i database\003_create_repository_schema.sql
+```
+
+If the schema is missing, the ingestion admin page explains how to create it.
+
+### Configuration
+
+```json
+"Ingestion": {
+  "Mode": "Sample",            // Sample (local files) or Http (live endpoints)
+  "BaseAddress": "https://suaidishak.pythonanywhere.com",
+  "ForecastPath": "/api/v1/sites/{site}/{feed}",
+  "MmfPath": "/api/v1/sites/{site}/mmf",
+  "Sites": [],                 // empty = discover all sites
+  "AutoEnabled": false,        // scheduled collection off by default
+  "AutoIntervalMinutes": 60,
+  "MaxForecastMw": 500,
+  "MmfOutOfRangeAbs": 100000
+}
+```
+
+- `Ingestion:SampleDataRoot` (Development) points at the local `Sample Data` folder.
+- Set `Ingestion:SampleForecastZip` to `lss-anomaly-test-2026-09-24.zip` to exercise anomaly detection against the injected faults (4 null timestamps, 5 negative MW).
+- `Mode: "Http"` calls the live endpoints instead of local files.
+
+### Run
+
+Sign in as an Admin and open **Data collection** (`/admin/ingestion`), then **Run collection now**. The page lists totals, recent runs, and recent anomalies. A failure on one endpoint is recorded as an anomaly and does not stop the run. With all sites selected this inserts roughly one million readings, so narrow `Ingestion:Sites` for a quick check.
+
+### Anomaly rules
+
+| Condition | Code |
+| --- | --- |
+| Missing/invalid interval or MMF timestamp | `NullTimestamp` |
+| Missing value | `MissingValue` |
+| Negative MW | `NegativeValue` |
+| Above `MaxForecastMw` / implausible MMF value | `OutOfRange` |
+| Interval not 15/30/60 minutes | `InvalidIntervalLength` |
+| Entire feed is zero | `AllZero` |
+| No intervals/readings | `EmptyFeed` |
+| Request failed / payload not parseable | `RequestFailed` / `ParseFailed` |
+
+### Schema
+
+`repo.Sites`, `repo.ApiEndpoints`, `repo.IngestionRuns`, `repo.ForecastReadings`, `repo.MmfReadings`, `repo.DataAnomalies` (created by `database/003_create_repository_schema.sql`).
+
 ## SQL Server setup
 
 The app connects to `localhost\SQLEXPRESS`, database `LSSRepo`, using Microsoft.Data.SqlClient and Windows authentication. The connection string lives in `database-settings.json`:
